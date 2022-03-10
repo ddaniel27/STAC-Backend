@@ -4,11 +4,13 @@ const { postOrder } = require("../controllers/postOrderController")
 const { createProduct } = require("../controllers/createProductController")
 const { updateProduct } = require("../controllers/updateProductController")
 const { deleteProduct } = require("../controllers/deleteProductController")
+const { changeOrderStatus } = require("../controllers/changeStatusOrderController")
 
 module.exports = (router) => {
     router.route('/api/products')
         .get(getProducts)
         .post(postOrder)
+        .put(changeOrderStatus)
 
     router.route('/api/crud')
         .get(getProducts)

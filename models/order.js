@@ -53,4 +53,25 @@ function findByPage({ page, limit }) {
     })
 }
 
-module.exports = { createNewOrder, findByID, findByPage }
+function changeStatus({ id }) {
+    return new Promise((resolve, reject) => {
+        const hashMap = {
+            "pending": "shipped",
+            "shipped": "delivered",
+            "delivered": "delivered"
+        }
+        Order.findById(id).select("statusOrder").exec((err, data) => {
+            if (err) { reject(err) }
+            else {
+                const currentStatus = data.statusOrder
+                if(!(currentStatus in hashMap)) { reject(new Error("Invalid status")) }
+                Order.findByIdAndUpdate(id, { statusOrder: hashMap[currentStatus] }, {new: true}, (err, data) => {
+                    if (err || !data) { reject(new Error('Could not update')) }
+                    else { resolve(data) }
+                })
+            }
+        })
+    })
+}
+
+module.exports = { createNewOrder, findByID, findByPage, changeStatus }
