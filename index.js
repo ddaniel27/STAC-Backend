@@ -23,12 +23,14 @@ myRouter(router)
 
 app.listen(port, function () {
     console.log(process.env.ENV, ': Listening on port', port, '- start:', Date(Date.now()).toString())
-    // try {
-    //     runner.run();
-    //   } catch(e) {
-    //     console.log('Tests are not valid:');
-    //     console.error(e);
-    //   }
+    try {
+        if(process.env.ENV === 'TEST') {
+            runner.run();
+        }
+      } catch(e) {
+        console.log('Tests are not valid:');
+        console.error(e);
+      }
 })
 
 module.exports = app // for testing
